@@ -1,14 +1,14 @@
 # Dependencies
 node_modules/
-package-lock.json
 
-# Output files (generated data)
+# Output files (generated data - scraped results)
 output/
-*.csv
-*.json
 
-# Reports (generated)
+# Reports (generated comparison reports)
 reports/
+
+# Input data files (keep structure but ignore actual data)
+Input/*.csv
 
 # Environment variables
 .env
