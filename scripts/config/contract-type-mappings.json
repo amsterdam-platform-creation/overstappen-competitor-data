@@ -1,0 +1,734 @@
+{
+  "energy": {
+    "Engie": {
+      "rules": [
+        {
+          "pattern": "Flexibel\\s*contract\\s*Gas\\s*\\+\\s*Elektriciteit|Flex\\s*Gas\\s*\\+\\s*elektriciteit",
+          "contract_type": "DUAL",
+          "meter_type": "BOTH",
+          "duration": "VARIABLE",
+          "notes": "Flex/Flexibel = variable dual contract"
+        },
+        {
+          "pattern": "Flexibel\\s*contract\\s*Gas|Flex\\s*Gas",
+          "contract_type": "SINGLE",
+          "meter_type": "GAS",
+          "duration": "VARIABLE",
+          "notes": "Flex gas only"
+        },
+        {
+          "pattern": "Flexibel\\s*contract\\s*Elektriciteit|Flex\\s*Elektriciteit",
+          "contract_type": "SINGLE",
+          "meter_type": "ELECTRICITY",
+          "duration": "VARIABLE",
+          "notes": "Flex electricity only"
+        },
+        {
+          "pattern": "(\\d+)\\s*jaar\\s*(?:Elektriciteit\\s*&\\s*Gas|Gas\\s*\\+\\s*elektriciteit)",
+          "contract_type": "DUAL",
+          "meter_type": "BOTH",
+          "duration_regex": "(\\d+)\\s*jaar",
+          "duration_mapping": {
+            "1": "ONE_YEAR",
+            "2": "TWO_YEARS",
+            "3": "THREE_YEARS",
+            "4": "FOUR_YEARS",
+            "5": "FIVE_YEARS"
+          },
+          "notes": "Woolsocks pattern: '3 jaar Elektriciteit & Gas'"
+        },
+        {
+          "pattern": "Gas \\+ elektriciteit:?\\s*(\\d+)\\s*jaar vast",
+          "contract_type": "DUAL",
+          "meter_type": "BOTH",
+          "duration_regex": "(\\d+)\\s*jaar",
+          "duration_mapping": {
+            "1": "ONE_YEAR",
+            "2": "TWO_YEARS",
+            "3": "THREE_YEARS",
+            "4": "FOUR_YEARS",
+            "5": "FIVE_YEARS"
+          },
+          "notes": "CashbackXL pattern: 'Gas + elektriciteit: 3 jaar vast'"
+        },
+        {
+          "pattern": "(\\d+)\\s*jaar\\s*(?:Gas|Elektriciteit)",
+          "contract_type": "SINGLE",
+          "meter_type": "EITHER",
+          "duration_regex": "(\\d+)\\s*jaar",
+          "duration_mapping": {
+            "1": "ONE_YEAR",
+            "2": "TWO_YEARS",
+            "3": "THREE_YEARS",
+            "4": "FOUR_YEARS",
+            "5": "FIVE_YEARS"
+          },
+          "notes": "Woolsocks single meter: '3 jaar Gas'"
+        },
+        {
+          "pattern": "Gas:?\\s*(\\d+)\\s*jaar vast",
+          "contract_type": "SINGLE",
+          "meter_type": "GAS",
+          "duration_regex": "(\\d+)\\s*jaar",
+          "duration_mapping": {
+            "1": "ONE_YEAR",
+            "2": "TWO_YEARS",
+            "3": "THREE_YEARS",
+            "4": "FOUR_YEARS",
+            "5": "FIVE_YEARS"
+          },
+          "notes": "CashbackXL pattern: 'Gas: 1 jaar vast'"
+        },
+        {
+          "pattern": "Elektriciteit:?\\s*(\\d+)\\s*jaar vast",
+          "contract_type": "SINGLE",
+          "meter_type": "ELECTRICITY",
+          "duration_regex": "(\\d+)\\s*jaar",
+          "duration_mapping": {
+            "1": "ONE_YEAR",
+            "2": "TWO_YEARS",
+            "3": "THREE_YEARS",
+            "4": "FOUR_YEARS",
+            "5": "FIVE_YEARS"
+          },
+          "notes": "CashbackXL pattern: 'Elektriciteit: 3 jaar vast'"
+        }
+      ]
+    },
+    "Vattenfall": {
+      "rules": [
+        {
+          "pattern": "Zakelijk|zakelijk|MKB",
+          "action": "IGNORE",
+          "reason": "Business deals excluded (B2B only)"
+        },
+        {
+          "pattern": "Energiecontract\\s*(?:stroom\\s*en\\s*gas|partnerships)",
+          "contract_type": "DUAL",
+          "meter_type": "BOTH",
+          "duration": "ANY",
+          "notes": "Woolsocks: Energiecontract stroom en gas / partnerships"
+        },
+        {
+          "pattern": "Energiecontract\\s*(?:Stroom|gas)",
+          "contract_type": "SINGLE",
+          "meter_type": "EITHER",
+          "duration": "ANY",
+          "notes": "Woolsocks: Energiecontract Stroom/gas"
+        },
+        {
+          "pattern": "Stroom én gas particulier",
+          "contract_type": "DUAL",
+          "meter_type": "BOTH",
+          "duration": "ANY",
+          "notes": "CashbackXL: Dual contract for consumers"
+        },
+        {
+          "pattern": "Stroom of gas particulier",
+          "contract_type": "SINGLE",
+          "meter_type": "EITHER",
+          "duration": "ANY",
+          "notes": "CashbackXL: Single meter (electricity OR gas)"
+        },
+        {
+          "pattern": "Verlenging",
+          "contract_type": "RENEWAL",
+          "notes": "Contract renewal (any type)"
+        }
+      ]
+    },
+    "Budget Energie": {
+      "rules": [
+        {
+          "pattern": "Contract\\s*1\\s*&\\s*2\\s*jaar",
+          "contract_type": "GENERIC",
+          "duration": "ONE_OR_TWO_YEARS",
+          "notes": "Multi-duration offer (1 or 2 years) - applies to both SINGLE and DUAL"
+        },
+        {
+          "pattern": "Contract\\s*(\\d+)\\s*jaar",
+          "contract_type": "GENERIC",
+          "duration_regex": "(\\d+)\\s*jaar",
+          "duration_mapping": {
+            "1": "ONE_YEAR",
+            "2": "TWO_YEARS",
+            "3": "THREE_YEARS",
+            "4": "FOUR_YEARS",
+            "5": "FIVE_YEARS"
+          },
+          "notes": "Fixed-term contracts - applies to both SINGLE and DUAL"
+        },
+        {
+          "pattern": "Variabel contract",
+          "contract_type": "GENERIC",
+          "duration": "VARIABLE",
+          "notes": "Variable rate contract - applies to both SINGLE and DUAL"
+        }
+      ]
+    },
+    "Essent": {
+      "rules": [
+        {
+          "pattern": "cadeaukaart|Keuze cadeaukaart",
+          "action": "IGNORE",
+          "reason": "Gift card promotion, not a contract deal"
+        },
+        {
+          "pattern": "(\\d+)-jarig contract",
+          "contract_type": "DUAL",
+          "meter_type": "BOTH",
+          "duration_regex": "(\\d+)-jarig",
+          "duration_mapping": {
+            "1": "ONE_YEAR",
+            "2": "TWO_YEARS",
+            "3": "THREE_YEARS",
+            "4": "FOUR_YEARS",
+            "5": "FIVE_YEARS"
+          },
+          "notes": "Matches: '3-jarig contract', assumes DUAL"
+        }
+      ]
+    },
+    "Energiedirect": {
+      "rules": [
+        {
+          "pattern": "Kies het contract|cashback.*Kies",
+          "action": "IGNORE",
+          "reason": "Promotional text, not a specific deal"
+        },
+        {
+          "pattern": "Online\\s*afsluiten|Energiecontract",
+          "contract_type": "GENERIC",
+          "notes": "Generic energy contract / online sign-up"
+        }
+      ]
+    },
+    "Powerpeers": {
+      "rules": [
+        {
+          "pattern": "(?:Stroom|[Gg]as)\\s*&\\s*(?:[Ss]troom|gas)\\s*(\\d+)\\s*jaar|(\\d+)\\s*jaar\\s*(?:Stroom|[Gg]as)\\s*&\\s*(?:[Ss]troom|gas)",
+          "contract_type": "DUAL",
+          "meter_type": "BOTH",
+          "duration_regex": "(\\d+)\\s*jaar",
+          "duration_mapping": {
+            "1": "ONE_YEAR",
+            "2": "TWO_YEARS",
+            "3": "THREE_YEARS",
+            "4": "FOUR_YEARS",
+            "5": "FIVE_YEARS"
+          },
+          "notes": "Dual with years (any word order): 'Stroom & gas 3 jaar' or '3 jaar gas & stroom'"
+        },
+        {
+          "pattern": "Stroom\\s*(\\d+)\\s*jaar|(\\d+)\\s*jaar\\s*[Ss]troom",
+          "contract_type": "SINGLE",
+          "meter_type": "ELECTRICITY",
+          "duration_regex": "(\\d+)\\s*jaar",
+          "duration_mapping": {
+            "1": "ONE_YEAR",
+            "2": "TWO_YEARS",
+            "3": "THREE_YEARS",
+            "4": "FOUR_YEARS",
+            "5": "FIVE_YEARS"
+          },
+          "notes": "Electricity only: 'Stroom 3 jaar' or '3 jaar Stroom'"
+        },
+        {
+          "pattern": "(?:Stroom|[Gg]as)\\s*&\\s*(?:[Ss]troom|gas)",
+          "contract_type": "DUAL",
+          "meter_type": "BOTH",
+          "duration": "ANY",
+          "notes": "Dual without years: 'Stroom & gas' or 'Gas & Stroom'"
+        },
+        {
+          "pattern": "(?:Stroom|[Gg]as)\\s*of\\s*(?:[Ss]troom|gas)",
+          "contract_type": "SINGLE",
+          "meter_type": "EITHER",
+          "duration": "ANY",
+          "notes": "Single meter: 'Stroom of gas' or 'Gas of Stroom'"
+        }
+      ]
+    },
+    "Pure Energie": {
+      "rules": [
+        {
+          "pattern": "[Ss]troom\\s*(?:en|óf)\\s*gas\\s*(\\d+)\\s*jaar",
+          "contract_type": "DUAL",
+          "meter_type": "BOTH",
+          "duration_regex": "(\\d+)\\s*jaar",
+          "duration_mapping": {
+            "1": "ONE_YEAR",
+            "2": "TWO_YEARS",
+            "3": "THREE_YEARS",
+            "4": "FOUR_YEARS",
+            "5": "FIVE_YEARS"
+          },
+          "notes": "Matches: 'Stroom en gas 3 jaar'"
+        },
+        {
+          "pattern": "[Ss]troom\\s*(?:of|óf)\\s*gas\\s*(\\d+)\\s*jaar",
+          "contract_type": "SINGLE",
+          "meter_type": "EITHER",
+          "duration_regex": "(\\d+)\\s*jaar",
+          "duration_mapping": {
+            "1": "ONE_YEAR",
+            "2": "TWO_YEARS",
+            "3": "THREE_YEARS",
+            "4": "FOUR_YEARS",
+            "5": "FIVE_YEARS"
+          },
+          "notes": "Matches: 'Stroom of/óf gas 1 jaar'"
+        }
+      ]
+    },
+    "Eneco": {
+      "rules": [
+        {
+          "pattern": "[Ss]troom\\s*&\\s*[Gg]as\\s*verlenging",
+          "contract_type": "RENEWAL",
+          "meter_type": "BOTH",
+          "notes": "Renewal for dual contract"
+        },
+        {
+          "pattern": "[Ss]troom\\s*of\\s*gas\\s*verlenging",
+          "contract_type": "RENEWAL",
+          "meter_type": "EITHER",
+          "notes": "Renewal for single contract"
+        },
+        {
+          "pattern": "[Ss]troom\\s*&\\s*[Gg]as",
+          "contract_type": "DUAL",
+          "meter_type": "BOTH",
+          "duration": "ANY",
+          "notes": "Dual contract (new)"
+        },
+        {
+          "pattern": "[Ss]troom\\s*of\\s*gas",
+          "contract_type": "SINGLE",
+          "meter_type": "EITHER",
+          "duration": "ANY",
+          "notes": "Single meter contract (new)"
+        }
+      ]
+    },
+    "Frank Energie": {
+      "rules": [
+        {
+          "pattern": "Stroom\\s*en\\s*gas|[Gg]as\\s*\\+\\s*[Ss]troom",
+          "contract_type": "DUAL",
+          "meter_type": "BOTH",
+          "duration": "ANY",
+          "notes": "Dual contract"
+        },
+        {
+          "pattern": "Stroom\\s*of\\s*gas",
+          "contract_type": "SINGLE",
+          "meter_type": "EITHER",
+          "duration": "ANY",
+          "notes": "Single meter (either gas or electricity)"
+        },
+        {
+          "pattern": "^[Gg]as$",
+          "contract_type": "SINGLE",
+          "meter_type": "GAS",
+          "duration": "ANY",
+          "notes": "Gas only"
+        },
+        {
+          "pattern": "^[Ss]troom$",
+          "contract_type": "SINGLE",
+          "meter_type": "ELECTRICITY",
+          "duration": "ANY",
+          "notes": "Electricity only"
+        }
+      ]
+    },
+    "Vandebron": {
+      "rules": [
+        {
+          "pattern": "Online\\s*overstappen|Energiecontract",
+          "contract_type": "GENERIC",
+          "notes": "Generic energy contract / online switch"
+        }
+      ]
+    },
+    "Innova": {
+      "rules": [
+        {
+          "pattern": "Online\\s*afsluiten\\s*(\\d+)\\s*jaar",
+          "contract_type": "GENERIC",
+          "duration_regex": "(\\d+)\\s*jaar",
+          "duration_mapping": {
+            "1": "ONE_YEAR",
+            "2": "TWO_YEARS",
+            "3": "THREE_YEARS",
+            "4": "FOUR_YEARS",
+            "5": "FIVE_YEARS"
+          },
+          "notes": "Woolsocks: 'Online afsluiten 3 jaar' - applies to both SINGLE and DUAL"
+        },
+        {
+          "pattern": "Contract\\s*(\\d+)\\s*jaar",
+          "contract_type": "GENERIC",
+          "duration_regex": "(\\d+)\\s*jaar",
+          "duration_mapping": {
+            "1": "ONE_YEAR",
+            "2": "TWO_YEARS",
+            "3": "THREE_YEARS",
+            "4": "FOUR_YEARS",
+            "5": "FIVE_YEARS"
+          },
+          "notes": "CashbackXL: Fixed-term contracts - applies to both SINGLE and DUAL"
+        }
+      ]
+    },
+    "Gewoon Energie": {
+      "rules": [
+        {
+          "pattern": "(\\d+)\\s*jaar\\s*stroom\\s*&\\s*gas",
+          "contract_type": "DUAL",
+          "meter_type": "BOTH",
+          "duration_regex": "(\\d+)\\s*jaar",
+          "duration_mapping": {
+            "1": "ONE_YEAR",
+            "2": "TWO_YEARS",
+            "3": "THREE_YEARS",
+            "4": "FOUR_YEARS",
+            "5": "FIVE_YEARS"
+          },
+          "notes": "Woolsocks: '3 jaar stroom & gas'"
+        },
+        {
+          "pattern": "Contract\\s*(\\d+)\\s*jaar",
+          "contract_type": "DUAL",
+          "meter_type": "BOTH",
+          "duration_regex": "(\\d+)\\s*jaar",
+          "duration_mapping": {
+            "1": "ONE_YEAR",
+            "2": "TWO_YEARS",
+            "3": "THREE_YEARS",
+            "4": "FOUR_YEARS",
+            "5": "FIVE_YEARS"
+          },
+          "notes": "CashbackXL: Assumes DUAL for fixed-term contracts"
+        }
+      ]
+    },
+    "United Consumers": {
+      "rules": [
+        {
+          "pattern": "iPad|PlayStation|Chromebook|Gratis",
+          "action": "IGNORE",
+          "reason": "Promotional gift offer, not a contract deal"
+        },
+        {
+          "pattern": "Autoverzekering",
+          "action": "IGNORE",
+          "reason": "Car insurance listed under energy category, out of scope"
+        },
+        {
+          "pattern": "[Ee]nergie.*\\([Gg]as\\s*\\+\\s*stroom\\)",
+          "contract_type": "DUAL",
+          "meter_type": "BOTH",
+          "duration": "ANY",
+          "notes": "Dual contract"
+        },
+        {
+          "pattern": "[Ee]nergie.*\\(alleen\\s*stroom\\s*OF\\s*alleen\\s*gas\\)",
+          "contract_type": "SINGLE",
+          "meter_type": "EITHER",
+          "duration": "ANY",
+          "notes": "Single meter contract"
+        }
+      ]
+    },
+    "_default": {
+      "rules": [
+        {
+          "pattern": "(\\d+)\\s*jaar\\s*stroom\\s*&\\s*gas|(\\d+)\\s*jaar\\s*(?:stroom|gas)\\s*(?:en|és|\\+|&)\\s*(?:stroom|gas)",
+          "contract_type": "DUAL",
+          "meter_type": "BOTH",
+          "duration_regex": "(\\d+)\\s*jaar",
+          "duration_mapping": {
+            "1": "ONE_YEAR",
+            "2": "TWO_YEARS",
+            "3": "THREE_YEARS",
+            "4": "FOUR_YEARS",
+            "5": "FIVE_YEARS"
+          },
+          "notes": "Dual contract with year specification (any word order)"
+        },
+        {
+          "pattern": "(\\d+)\\s*jaar(?:s)?\\s*(?:vast|fixed)",
+          "duration_regex": "(\\d+)\\s*jaar",
+          "duration_mapping": {
+            "1": "ONE_YEAR",
+            "2": "TWO_YEARS",
+            "3": "THREE_YEARS",
+            "4": "FOUR_YEARS",
+            "5": "FIVE_YEARS"
+          },
+          "notes": "Generic duration pattern"
+        },
+        {
+          "pattern": "stroom\\s*&\\s*gas|gas\\s*&\\s*stroom|stroom.*(?:en|és|\\+).*gas|gas.*(?:en|és|\\+).*stroom|elektriciteit.*(?:en|és|\\+|&).*gas",
+          "contract_type": "DUAL",
+          "meter_type": "BOTH",
+          "notes": "Generic DUAL pattern (both utilities)"
+        },
+        {
+          "pattern": "stroom\\s*of\\s*gas|gas\\s*of\\s*stroom|alleen\\s*(?:stroom|gas)|(?:stroom|gas)\\s*only",
+          "contract_type": "SINGLE",
+          "meter_type": "EITHER",
+          "notes": "Single meter (either gas or electricity)"
+        },
+        {
+          "pattern": "MKB|zakelijk|business",
+          "action": "IGNORE",
+          "reason": "Business/MKB deals excluded (B2B only)"
+        },
+        {
+          "pattern": "partnerships|online\\s*afsluiten|online\\s*overstappen",
+          "contract_type": "GENERIC",
+          "notes": "Generic deal (online sign-up, partnerships)"
+        },
+        {
+          "pattern": "variabel|flex|dynamic",
+          "duration": "VARIABLE",
+          "notes": "Variable/dynamic contract"
+        }
+      ]
+    }
+  },
+  "car": {
+    "OHRA": {
+      "rules": [
+        {
+          "pattern": "Caravanverzekering|Opstalverzekering|Inboedelverzekering|Kilometerverzekering|Huisdierenverzekering|Doorlopende Reisverzekering|Rechtsbijstandverzekering|Motorverzekering",
+          "action": "IGNORE",
+          "reason": "Non-car insurance product (out of scope for car comparison)"
+        },
+        {
+          "pattern": "All [Rr]isk|Allrisk|Volledig [Cc]asco",
+          "coverage_type": "ALL_RISK",
+          "notes": "Comprehensive coverage"
+        },
+        {
+          "pattern": "WA[\\s-]?[Pp]lus|WA\\+|Beperkt [Cc]asco",
+          "coverage_type": "WA_PLUS",
+          "notes": "Third-party plus limited own damage"
+        },
+        {
+          "pattern": "\\bWA\\b(?![\\s-]?[Pp]lus|\\+)",
+          "coverage_type": "WA",
+          "notes": "Third-party liability only (Wettelijke Aansprakelijkheid)"
+        }
+      ]
+    },
+    "Centraal Beheer": {
+      "rules": [
+        {
+          "pattern": "Inboedelverzekering|Caravan|Motorverzekering|Doorlopende Reisverzekering|Camperverzekering|Opstalverzekering|Rechtsbijstandverzekering|Aansprakelijkheidsverzekering",
+          "action": "IGNORE",
+          "reason": "Non-car insurance product (out of scope for car comparison)"
+        },
+        {
+          "pattern": "Online\\s*afsluiten|Autoverzekering",
+          "coverage_type": "GENERIC_CAR",
+          "notes": "Generic car insurance (points-based, max €80)"
+        }
+      ]
+    },
+    "FBTO": {
+      "rules": [
+        {
+          "pattern": "Overlijdensrisicoverzekering|Woonhuisverzekering|Opstalverzekering|Doorlopende reisverzekering|Inboedelverzekering|Motorverzekering|Aansprakelijkheidsverzekering|Pleziervaartuig|Rechtsbijstandsverzekering",
+          "action": "IGNORE",
+          "reason": "Non-car insurance product (out of scope for car comparison)"
+        },
+        {
+          "pattern": "Autoverzekering",
+          "coverage_type": "GENERIC_CAR",
+          "notes": "Generic car insurance (points-based, €55)"
+        }
+      ]
+    },
+    "Unive": {
+      "rules": [
+        {
+          "pattern": "Bromfietsverzekering|Doorlopende reisverzekering|Inboedelverzekering|Huisdierenverzekering|Caravanverzekering|Zakelijk rechtsbijstandsverzekering|Motorverzekering|Opstalverzekering|Bedrijfsaansprakelijkheidsverzekering|Aansprakelijkheidsverzekering",
+          "action": "IGNORE",
+          "reason": "Non-car insurance product (out of scope for car comparison)"
+        },
+        {
+          "pattern": "Autoverzekering\\s*Allrisk",
+          "coverage_type": "ALL_RISK",
+          "notes": "Comprehensive coverage"
+        },
+        {
+          "pattern": "Autoverzekering\\s*WA-plus",
+          "coverage_type": "WA_PLUS",
+          "notes": "Third-party plus limited own damage"
+        },
+        {
+          "pattern": "Autoverzekering\\s*WA",
+          "coverage_type": "WA",
+          "notes": "Third-party liability only"
+        },
+        {
+          "pattern": "Autoverzekering",
+          "coverage_type": "GENERIC_CAR",
+          "notes": "Generic car insurance"
+        }
+      ]
+    },
+    "United Consumers": {
+      "rules": [
+        {
+          "pattern": "Autoverzekering",
+          "coverage_type": "GENERIC_CAR",
+          "notes": "Generic car insurance"
+        }
+      ]
+    },
+    "_default": {
+      "rules": [
+        {
+          "pattern": "All [Rr]isk|Allrisk|Volledig [Cc]asco",
+          "coverage_type": "ALL_RISK"
+        },
+        {
+          "pattern": "WA[\\s-]?[Pp]lus|WA\\+|Beperkt [Cc]asco",
+          "coverage_type": "WA_PLUS"
+        },
+        {
+          "pattern": "\\bWA\\b(?![\\s-]?[Pp]lus|\\+)",
+          "coverage_type": "WA"
+        },
+        {
+          "pattern": "Autoverzekering|[Aa]uto",
+          "coverage_type": "GENERIC_CAR",
+          "notes": "Fallback for generic car insurance"
+        }
+      ]
+    }
+  },
+  "health": {
+    "Ohra": {
+      "rules": [
+        {
+          "pattern": "Caravanverzekering|Opstalverzekering|Inboedelverzekering|Kilometerverzekering|Huisdierenverzekering|Doorlopende Reisverzekering|Rechtsbijstandverzekering|Motorverzekering|Autoverzekering",
+          "action": "IGNORE",
+          "reason": "Non-health insurance product (category mismatch, should be in car/other)"
+        },
+        {
+          "pattern": "Zorgverzekering",
+          "insurance_type": "HEALTH_INSURANCE",
+          "notes": "Health insurance"
+        }
+      ]
+    },
+    "FBTO": {
+      "rules": [
+        {
+          "pattern": "Overlijdensrisicoverzekering|Woonhuisverzekering|Opstalverzekering|Doorlopende reisverzekering|Inboedelverzekering|Motorverzekering|Aansprakelijkheidsverzekering|Pleziervaartuig|Rechtsbijstandsverzekering",
+          "action": "IGNORE",
+          "reason": "Non-health/car insurance product (out of scope)"
+        },
+        {
+          "pattern": "autoverzekering\\s*all\\s*risk",
+          "coverage_type": "ALL_RISK",
+          "notes": "Car insurance (miscategorized in health vertical)"
+        },
+        {
+          "pattern": "autoverzekering\\s*WA\\s*Plus",
+          "coverage_type": "WA_PLUS",
+          "notes": "Car insurance (miscategorized in health vertical)"
+        },
+        {
+          "pattern": "autoverzekering\\s*WA",
+          "coverage_type": "WA",
+          "notes": "Car insurance (miscategorized in health vertical)"
+        },
+        {
+          "pattern": "Autoverzekering",
+          "coverage_type": "GENERIC_CAR",
+          "notes": "Generic car insurance (miscategorized in health vertical)"
+        },
+        {
+          "pattern": "Zorgverzekering",
+          "insurance_type": "HEALTH_INSURANCE",
+          "notes": "Health insurance"
+        }
+      ]
+    },
+    "United Consumers": {
+      "rules": [
+        {
+          "pattern": "iPad|PlayStation|Chromebook|Gratis",
+          "action": "IGNORE",
+          "reason": "Promotional gift offer, not insurance"
+        },
+        {
+          "pattern": "Autoverzekering|[Ee]nergie",
+          "action": "IGNORE",
+          "reason": "Non-health product (category mismatch)"
+        },
+        {
+          "pattern": "Zorgverzekering",
+          "insurance_type": "HEALTH_INSURANCE",
+          "notes": "Health insurance"
+        }
+      ]
+    },
+    "Unive": {
+      "rules": [
+        {
+          "pattern": "Bromfietsverzekering|Doorlopende reisverzekering|Inboedelverzekering|Huisdierenverzekering|Caravanverzekering|Zakelijk rechtsbijstandsverzekering|Motorverzekering|Opstalverzekering|Bedrijfsaansprakelijkheidsverzekering|Aansprakelijkheidsverzekering|Autoverzekering",
+          "action": "IGNORE",
+          "reason": "Non-health insurance product (category mismatch)"
+        },
+        {
+          "pattern": "Zorgverzekering",
+          "insurance_type": "HEALTH_INSURANCE",
+          "notes": "Health insurance"
+        }
+      ]
+    },
+    "CZ": {
+      "rules": [
+        {
+          "pattern": ".*",
+          "insurance_type": "HEALTH_INSURANCE",
+          "notes": "CZ health insurance (generic)"
+        }
+      ]
+    },
+    "_default": {
+      "rules": [
+        {
+          "pattern": ".*",
+          "insurance_type": "HEALTH_INSURANCE",
+          "notes": "Health insurance typically has no contract type variations"
+        }
+      ]
+    }
+  },
+  "_notes": {
+    "description": "Contract type mapping rules for CashbackXL scraped deals",
+    "version": "1.0.0",
+    "last_updated": "2025-11-11",
+    "usage": "Apply regex patterns sequentially; first match wins",
+    "action_types": {
+      "IGNORE": "Skip this deal (business only, etc.)",
+      "GENERIC": "Generic deal without specific contract type"
+    },
+    "contract_types": {
+      "energy": ["SINGLE", "DUAL", "GENERIC", "RENEWAL"],
+      "car": ["WA", "WA_PLUS", "ALL_RISK", "GENERIC_CAR"],
+      "health": ["HEALTH_INSURANCE"]
+    },
+    "duration_types": ["ONE_YEAR", "TWO_YEARS", "THREE_YEARS", "FOUR_YEARS", "FIVE_YEARS", "VARIABLE", "DYNAMIC", "ANY"],
+    "meter_types": ["GAS", "ELECTRICITY", "BOTH", "EITHER"]
+  }
+}

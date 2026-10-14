@@ -2,7 +2,7 @@
 
 **Project:** Overstappen Competitor Data Analysis
 **Last Updated:** 2025-11-11
-**Owner:** Jochem (CPO, Woolsocks)
+**Owner:** Jochem
 **Status:** ✅ Phase 1 & Phase 2 Complete - System Operational
 
 ---

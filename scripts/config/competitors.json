@@ -1,0 +1,60 @@
+{
+  "comparison_sites": {
+    "energy": [
+      {
+        "name": "Independer Energie",
+        "slug": "independer-energie",
+        "category": "energy"
+      },
+      {
+        "name": "Overstappen.nl",
+        "slug": "overstappennl",
+        "category": "energy"
+      },
+      {
+        "name": "GasLicht.com",
+        "slug": "gaslichtcom",
+        "category": "energy"
+      },
+      {
+        "name": "Pricewise Energie",
+        "slug": "pricewise-energie",
+        "category": "energy"
+      }
+    ],
+    "car": [
+      {
+        "name": "Independer Auto",
+        "slug": "independer-auto",
+        "category": "car"
+      },
+      {
+        "name": "Overstappen.nl Verzekeringen",
+        "slug": "overstappennl-verzekeringen",
+        "category": "car"
+      }
+    ],
+    "health": [
+      {
+        "name": "Independer Zorgverzekering",
+        "slug": "independer-zorgverzekering",
+        "category": "health"
+      },
+      {
+        "name": "Zorgkiezer",
+        "slug": "zorgkiezer",
+        "category": "health"
+      },
+      {
+        "name": "Poliswijzer.nl Zorgverzekering",
+        "slug": "poliswijzernl-zorgverzekering",
+        "category": "health"
+      },
+      {
+        "name": "Overstappen.nl Verzekeringen",
+        "slug": "overstappennl-verzekeringen",
+        "category": "health"
+      }
+    ]
+  }
+}
